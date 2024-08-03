@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+img {
+  max-width: none;
+}
+
 
 @layer base {
   :root {
