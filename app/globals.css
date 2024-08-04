@@ -6,6 +6,16 @@ img {
   max-width: none;
 }
 
+.text-gradient {
+  text-align: center;
+  color: #004ca6;
+  background: #004ca6;
+  background: linear-gradient(90deg, #35a9fd 0, #004ca6 95%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 
 @layer base {
   :root {
