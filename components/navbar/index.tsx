@@ -11,7 +11,7 @@ export const Navbar = () => {
       <div className="flex gap-1.5 justify-center self-stretch my-auto text-2xl tracking-tighter text-neutral-700">
         <Link href="/" className="flex items-center gap-2">
           <Image
-            src="/logo.svg"
+            src="/images/logo.svg"
             alt="collectify"
             sizes="100vw"
             style={{ width: "50px", height: "auto" }}
@@ -43,7 +43,7 @@ export const Navbar = () => {
         <Button
           variant="outline"
           size="default"
-          className="hover:bg-inherit hover:text-inherit font-semibold text-gray-700 dark:text-white "
+          className="hover:bg-inherit hover:text-inherit font-semibold text-gray-700 dark:text-white asChild bg-transparent"
         >
           <Link href="/">Sign in</Link>
         </Button>
