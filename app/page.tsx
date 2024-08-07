@@ -4,10 +4,10 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <>
+    <main className="pt-20 pb-20 bg-slate-100 dark:bg-inherit dark:text-inherit">
       <section className="flex flex-col items-center justify-center">
-        <div className="flex items-center justify-center flex-col w-full bg-[#f2f5ff] bg-opacity-1">
-          <div className="flex items-center border shadow-sm p-4 bg-indigo-100 text-indigo-700 rounded-full uppercase font-bold">
+        <div className="flex items-center justify-center flex-col w-full">
+          <div className="flex items-center border shadow-sm p-4 bg-indigo-100 text-indigo-700 rounded-full uppercase font-bold dark:bg-gradient-to-r from-violet-500 to-violet-700 dark:text-white">
             <Medal className="h-6 w-6 mr-2" />
             No 1 collection management
           </div>
@@ -26,6 +26,10 @@ export default function Home() {
           <Link href="/signup">Get Collectify for Free</Link>
         </Button>
       </section>
-    </>
+      {/* tags */}
+      {/* <section className="flex flex-col items-center justify-center">
+
+      </section> */}
+    </main>
   );
 }
