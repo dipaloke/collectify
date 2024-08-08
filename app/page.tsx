@@ -26,10 +26,10 @@ export default function Home() {
           <Link href="/signup">Get Collectify for Free</Link>
         </Button>
       </section>
-      {/* tags */}
-      {/* <section className="flex flex-col items-center justify-center">
-
-      </section> */}
+      {/* TODO: make tags dynamic */}
+      <section className="flex items-center justify-center">
+        <div className=""></div>
+      </section>
     </main>
   );
 }

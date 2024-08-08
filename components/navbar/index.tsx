@@ -10,7 +10,7 @@ export const Navbar = () => {
   return (
     <nav className="container flex sticky top-0 z-50 gap-5 justify-between items-center px-8 py-3 font-bold border-b border-solid leading-[154.5%] max-md:flex-wrap max-md:px-5 bg-slate-50 shadow-sm dark:bg-slate-900/70 transition-shadow">
       <div className="flex gap-1.5 justify-center self-stretch my-auto text-2xl tracking-tighter text-neutral-700">
-        <Logo />
+        <Logo height={50} width={50} />
       </div>
       <div className="px-8 py-2  bg-slate-200/50 rounded-2xl dark:bg-inherit hidden md:flex">
         <ul className="gap-5 justify-between self-stretch my-auto font-medium leading-5  flex max-md:flex-wrap max-md:max-w-full text-gray-700  dark:text-inherit">
