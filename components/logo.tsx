@@ -3,12 +3,12 @@
 import Image from "next/image";
 import Link from "next/link";
 
-type props = {
+interface LogoProps {
   width: number;
   height: number;
 };
 
-export const Logo = ({height,width}: props) => {
+export const Logo = ({height,width}: LogoProps) => {
   return (
     <Link href="/">
       <div className="hover:opacity-75 transition hidden md:flex items-center gap-x-2">
