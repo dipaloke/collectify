@@ -22,6 +22,7 @@ export const Navbar = () => {
           </li>
         </ul>
         {/* TODO: Create a button to create Collection */}
+
       </div>
       <div className="flex gap-2 items-center space-x-2">
         <SearchBar />
@@ -39,3 +40,4 @@ export const Navbar = () => {
     </nav>
   );
 };
+ 
