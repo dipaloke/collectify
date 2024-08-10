@@ -13,7 +13,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { LoginSchema } from "@/schemas";
-import { z } from "zod";
+import * as z from "zod";
 import { useSearchParams } from "next/navigation";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
@@ -21,6 +21,7 @@ import { Button } from "../ui/button";
 import { FormError } from "../form-error";
 import { FormSuccess } from "../form-success";
 import { FaCircleNotch } from "react-icons/fa";
+import { login } from "@/actions/login";
 
 export const LoginForm = () => {
   const searchParams = useSearchParams();
@@ -44,7 +45,17 @@ export const LoginForm = () => {
     },
   });
 
-  // TODO: add onSubmit functionality
+  const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+    setError("");
+    setSuccess("");
+
+    startTransition(() => {
+      login(values).then((data) => {
+        setError(data.error);
+        setSuccess(data.success);
+      });
+    });
+  };
 
   return (
     <CardWrapper
@@ -54,7 +65,7 @@ export const LoginForm = () => {
       showSocial
     >
       <Form {...form}>
-        <form className="space-y-6" onSubmit={form.handleSubmit(() => {})}>
+        <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
           <div className="space-y-4">
             <>
               <FormField
