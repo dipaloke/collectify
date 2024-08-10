@@ -116,7 +116,7 @@ export const RegisterForm = () => {
           <Button type="submit" className="w-full">
             {isPending ? (
               <span className="flex items-center space-x-2">
-                <FaCircleNotch className="h-5 w-5 animate-spin" />
+                <FaCircleNotch className="h-4 w-4 animate-spin" />
                 <span>Creating...</span>
               </span>
             ) : (
