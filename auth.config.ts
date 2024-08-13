@@ -1,5 +1,5 @@
-import NextAuthConfig from "next-auth";
-import Credentials from "next-auth/providers/credentials";
+import type { NextAuthConfig } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
 
 import Google from "next-auth/providers/google";
 import Github from "next-auth/providers/github";
@@ -18,7 +18,12 @@ export default {
       clientId: process.env.GITHUB_CLIENT_ID as string,
       clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
     }),
-    Credentials({
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        username: { label: "Username", type: "text", placeholder: "John Doe" },
+        password: { label: "Password", type: "password" },
+      },
       async authorize(credentials) {
         const validatedFields = LoginSchema.safeParse(credentials);
 
@@ -37,4 +42,4 @@ export default {
       },
     }),
   ],
-} satisfies typeof NextAuthConfig;
+} satisfies NextAuthConfig;
