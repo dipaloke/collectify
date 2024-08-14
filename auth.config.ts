@@ -10,20 +10,20 @@ import bcrypt from "bcryptjs";
 
 export default {
   providers: [
-    Google({
-      clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-    }),
-    Github({
-      clientId: process.env.GITHUB_CLIENT_ID as string,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
-    }),
+    // Google({
+    //   clientId: process.env.GOOGLE_CLIENT_ID as string,
+    //   clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+    // }),
+    // Github({
+    //   clientId: process.env.GITHUB_CLIENT_ID as string,
+    //   clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
+    // }),
     CredentialsProvider({
-      name: "Credentials",
-      credentials: {
-        username: { label: "Username", type: "text", placeholder: "John Doe" },
-        password: { label: "Password", type: "password" },
-      },
+      // name: "Credentials",
+      // credentials: {
+      //   username: { label: "Username", type: "text", placeholder: "John Doe" },
+      //   password: { label: "Password", type: "password" },
+      // },
       async authorize(credentials) {
         const validatedFields = LoginSchema.safeParse(credentials);
 

@@ -7,6 +7,7 @@ import bcrypt from "bcryptjs";
 import { getUserByEmail } from "@/data/user";
 import { db } from "@/lib/db";
 
+
 export const register = async (values: z.infer<typeof RegistrationSchema>) => {
   const validatedFields = RegistrationSchema.safeParse(values);
 
@@ -27,6 +28,8 @@ export const register = async (values: z.infer<typeof RegistrationSchema>) => {
   }
 
   try {
+    const DB = db
+    if(!DB) return {error: "DB is not loaded"}
     await db.user.create({
       data: {
         name,
@@ -35,7 +38,7 @@ export const register = async (values: z.infer<typeof RegistrationSchema>) => {
       },
     });
   } catch (error) {
-    console.log(error);
+    console.log({ error: { error } });
   }
   return { success: "Success! Registration completed" };
 };

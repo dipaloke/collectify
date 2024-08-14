@@ -1,5 +1,5 @@
 
-export const DEFAULT_LOGIN_REDIRECT = "/users/[id]"
+export const DEFAULT_LOGIN_REDIRECT = "/settings"
 
 export const publicRoute = ["/"]
 
