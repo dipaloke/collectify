@@ -51,10 +51,15 @@ export const LoginForm = () => {
     setSuccess("");
 
     startTransition(() => {
-      login(values).then((data) => {
-        setError(data?.error);
-        // setSuccess(data?.success);
-      });
+      login(values, callbackUrl).then((data) => {
+        if (data?.error) {
+          form.reset()
+          setError(data?.error);
+        }
+        if(data?.success) {
+          setSuccess(data.success)
+        }
+      }).catch(() => setError("Something went wrong!"))
     });
   };
 

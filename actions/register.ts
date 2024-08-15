@@ -28,8 +28,6 @@ export const register = async (values: z.infer<typeof RegistrationSchema>) => {
   }
 
   try {
-    const DB = db
-    if(!DB) return {error: "DB is not loaded"}
     await db.user.create({
       data: {
         name,
