@@ -27,9 +27,9 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
-  // collections   Collection[]
-  // comments      Comment[]
-  // likes         Like[]
+  collections   Collection[]
+  comments      Comment[]
+  likes         Like[]
 
   @@index([email])
 }
@@ -62,6 +62,91 @@ model Session {
   user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+model Collection {
+  id                        String        @id     @default(uuid())
+  name                      String
+  description               String?
+  category                  String
+  imageUrl                  String
+  userId                    String
+  user                      User          @relation(fields: [userId],references: [id], onDelete: Cascade)
+
+  customString1State        Boolean       @default(false)
+  customString1Name         String?
+  customString2State        Boolean       @default(false)
+  customString2Name         String?
+  customString3State        Boolean       @default(false)
+  customString3Name         String?
+
+  customInt1Value           Int?
+  customInt2Value           Int?
+  customInt3Value           Int?
+
+  customFields              Json?
+
+  items                     Item[]
+
+  createdAt                 DateTime      @default(now())
+  updatedAt                 DateTime      @updatedAt
+
+  @@index([userId])
+}
+
+model Item {
+  id                        String        @id     @default(uuid())
+  name                      String
+  tags                      String[]
+  collectionId              String
+  collection                Collection    @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+
+  customString1Value        String?
+  customString2Value        String?
+  customString3Value        String?
+
+  customInt1Value           String?
+  customInt2Value           String?
+  customInt3Value           String?
+
+  customFields              Json?
+
+  comments                  Comment[]
+  likes                     Like[]
+
+  createdAt                 DateTime      @default(now())
+  updatedAt                 DateTime      @updatedAt
+
+  @@index([collectionId])
+}
+
+model Comment {
+  id                        String        @id     @default(uuid())
+  content                   String
+  userId                    String
+  itemId                    String
+  user                      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  item                      Item          @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  createdAt                 DateTime      @default(now())
+  updatedAt                 DateTime      @updatedAt
+
+  @@index([userId])
+  @@index([itemId])
+}
+
+model Like {
+  id                        String        @id     @default(uuid())
+
+  userId                    String
+  itemId                    String
+  user                      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  item                      Item          @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  createdAt                 DateTime      @default(now())
+  updatedAt                 DateTime      @updatedAt
+
+  @@index([userId])
+  @@index([itemId])
+}
 
 enum Role {
   USER
