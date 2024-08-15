@@ -25,6 +25,7 @@ import { login } from "@/actions/login";
 
 export const LoginForm = () => {
   const searchParams = useSearchParams();
+
   const callbackUrl = searchParams.get("callback");
 
   const urlError =
@@ -51,8 +52,8 @@ export const LoginForm = () => {
 
     startTransition(() => {
       login(values).then((data) => {
-        setError(data.error);
-        setSuccess(data.success);
+        setError(data?.error);
+        // setSuccess(data?.success);
       });
     });
   };
