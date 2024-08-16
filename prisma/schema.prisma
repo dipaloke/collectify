@@ -78,9 +78,33 @@ model Collection {
   customString3State        Boolean       @default(false)
   customString3Name         String?
 
-  customInt1Value           Int?
-  customInt2Value           Int?
-  customInt3Value           Int?
+  customText1State          Boolean       @default(false)
+  customText1Name           String?
+  customText2State          Boolean       @default(false)
+  customText2Name           String?
+  customText3State          Boolean       @default(false)
+  customText3Name           String?
+
+  customInt1State           Boolean       @default(false)
+  customInt1Name            String?
+  customInt2State           Boolean       @default(false)
+  customInt2Name            String?
+  customInt3State           Boolean       @default(false)
+  customInt3Name            String?
+
+  customCheckbox1State      Boolean       @default(false)
+  customCheckbox1Name       String?
+  customCheckbox2State      Boolean       @default(false)
+  customCheckbox2Name       String?
+  customCheckbox3State      Boolean       @default(false)
+  customCheckbox3Name       String?
+
+  customDate1State           Boolean       @default(false)
+  customDate1Name            String?
+  customDate2State           Boolean       @default(false)
+  customDate2Name            String?
+  customDate3State           Boolean       @default(false)
+  customDate3Name            String?
 
   customFields              Json?
 
@@ -103,9 +127,21 @@ model Item {
   customString2Value        String?
   customString3Value        String?
 
-  customInt1Value           String?
-  customInt2Value           String?
-  customInt3Value           String?
+  customText1Value          String?
+  customText3Value          String?
+  customText2Value          String?
+
+  customCheckbox1Value      Boolean?
+  customCheckbox3Value      Boolean?
+  customCheckbox2Value      Boolean?
+
+  customInt1Value           Int?
+  customInt2Value           Int?
+  customInt3Value           Int?
+
+  customDate1Value          DateTime?
+  customDate2Value          DateTime?
+  customDate3Value          DateTime?
 
   customFields              Json?
 
