@@ -19,12 +19,18 @@ import { FormSuccess } from "../form-success";
 import { Button } from "../ui/button";
 import { FaCircleNotch } from "react-icons/fa";
 import { register } from "@/actions/register";
+import { useRouter } from "next/navigation";
+import { REGISTER_REDIRECT } from "@/routes";
+import { useToast } from "../ui/use-toast";
 
 export const RegisterForm = () => {
+  const router = useRouter();
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
 
   const [isPending, startTransition] = useTransition();
+
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof RegistrationSchema>>({
     resolver: zodResolver(RegistrationSchema),
@@ -41,8 +47,21 @@ export const RegisterForm = () => {
 
     startTransition(() => {
       register(values).then((data) => {
-        setError(data.error);
-        setSuccess(data.success);
+        if (data.error) {
+          setError(data.error);
+          toast({
+            title: "Uh oh! Something went wrong.",
+            description: `${data.error}`,
+          });
+        }
+        if (data.success) {
+          setSuccess(data.success);
+          router.push(REGISTER_REDIRECT);
+          toast({
+            title: "Success!!",
+            description: "You have successfully registered. Please login",
+          });
+        }
       });
     });
   };

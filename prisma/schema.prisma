@@ -106,12 +106,12 @@ model Collection {
   customDate3State           Boolean       @default(false)
   customDate3Name            String?
 
-  customFields              Json?
+  customFields               Json?
 
-  items                     Item[]
+  items                      Item[]
 
-  createdAt                 DateTime      @default(now())
-  updatedAt                 DateTime      @updatedAt
+  createdAt                  DateTime      @default(now())
+  updatedAt                  DateTime      @updatedAt
 
   @@index([userId])
 }

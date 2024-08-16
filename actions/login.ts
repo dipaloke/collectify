@@ -3,7 +3,6 @@
 import * as z from "zod";
 import { LoginSchema } from "@/schemas";
 import { signIn } from "@/auth";
-import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { AuthError } from "next-auth";
 import { getUserByEmail } from "@/data/user";
 
@@ -26,20 +25,25 @@ export const login = async (
   }
 
   try {
-    await signIn("credentials", {
+    const result = await signIn("credentials", {
       email,
       password,
-      redirectTo: callbackUrl || DEFAULT_LOGIN_REDIRECT,
+      redirect: false,
     });
-    return { success: "Success!!" };
+
+    if (result?.error) {
+      return { error: "Provided email or password is incorrect" };
+    }
+
+    const userId = existingUser.id;
+    const redirectTo = callbackUrl || `/users/${userId}`;
+    return { success: "Success!!", redirectTo };
   } catch (error) {
-    console.log({ error: error });
     if (error instanceof AuthError) {
       switch (error.type) {
         case "CredentialsSignin":
           return { error: "provided Email or password is incorrect" };
         default:
-          console.log({ error: error });
           return {
             error: "Something went wrong",
           };
