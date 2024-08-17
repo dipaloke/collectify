@@ -42,7 +42,7 @@ export const UserButton = ({ avatarImageSrc }: UserButtonProps) => {
           <DropdownMenuSeparator />
           <DropdownMenuItem>
             <LogoutButton>
-              <IoMdExit className="h-5 w-5 mr-2" />
+              <IoMdExit className="h-5 w-5 mr-4" />
               Logout
             </LogoutButton>
           </DropdownMenuItem>
