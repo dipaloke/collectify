@@ -25,7 +25,6 @@ model User {
   updatedAt     DateTime    @updatedAt
 
   accounts      Account[]
-  sessions      Session[]
 
   collections   Collection[]
   comments      Comment[]
@@ -53,14 +52,6 @@ model Account {
   @@unique([provider, providerAccountId])
 }
 
-model Session {
-  id            String      @id     @default(uuid())
-  sessionToken  String      @unique
-  userId        String
-  expires       DateTime
-
-  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
 
 model Collection {
   id                        String        @id     @default(uuid())

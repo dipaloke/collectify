@@ -19,11 +19,6 @@ export default {
       clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
     }),
     CredentialsProvider({
-      name: "Credentials",
-      credentials: {
-        username: { label: "Username", type: "text", placeholder: "John Doe" },
-        password: { label: "Password", type: "password" },
-      },
       async authorize(credentials) {
         const validatedFields = LoginSchema.safeParse(credentials);
 

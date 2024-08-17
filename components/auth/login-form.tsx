@@ -70,7 +70,7 @@ export const LoginForm = () => {
             setSuccess(data.success);
             router.push(data.redirectTo);
             toast({
-              title: "Success!!",
+              title: `${data.success}`,
               description: "You have successfully logged in",
             });
           }

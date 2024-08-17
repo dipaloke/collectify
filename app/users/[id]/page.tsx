@@ -6,7 +6,6 @@ import { useCurrentUser } from "@/hooks/use-current-user";
 import { logOut } from "@/actions/logout";
 
 const UserIdPage = () => {
-  // const session = await auth();
 
   const user = useCurrentUser()
 
