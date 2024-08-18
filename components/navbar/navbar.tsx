@@ -7,13 +7,15 @@ import { Logo } from "../logo";
 import { LoginButton } from "../auth/login-button";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { UserButton } from "./user-button";
+import { MobileSidebar } from "./mobile-sidebar";
 
 export const Navbar = () => {
   const user = useCurrentUser();
 
   return (
     <nav className="container flex sticky top-0 z-50 gap-5 justify-between items-center px-8 py-3 font-bold border-b border-solid leading-[154.5%] max-md:flex-wrap max-md:px-5 bg-slate-50 shadow-sm dark:bg-slate-900/70 transition-shadow">
-      <div className="flex gap-1.5 justify-center self-stretch my-auto text-2xl tracking-tighter text-neutral-700">
+      <MobileSidebar />
+      <div className="hidden md:flex gap-1.5 justify-center self-stretch my-auto text-2xl tracking-tighter text-neutral-700">
         <Logo height={50} width={50} />
       </div>
       <div className="px-12 py-2 bg-slate-200/50 rounded-2xl dark:bg-inherit hidden md:flex">
@@ -29,7 +31,9 @@ export const Navbar = () => {
       <div className="flex gap-2 items-center space-x-2">
         <SearchBar />
         {user ? (
-          <UserButton avatarImageSrc={user?.image as string} />
+          <div className="hidden md:flex">
+            <UserButton avatarImageSrc={user?.image as string} />
+          </div>
         ) : (
           <LoginButton asChild mode="modal">
             <Button

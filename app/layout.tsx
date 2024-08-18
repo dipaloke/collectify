@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/themeProvider";
-import { Navbar } from "@/components/navbar";
+
 import { Footer } from "@/components/footer";
 import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
 import { Toaster } from "@/components/ui/toaster";
+import { Navbar } from "@/components/navbar/navbar";
 
 const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"] });
 

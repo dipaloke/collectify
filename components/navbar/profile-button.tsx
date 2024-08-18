@@ -14,7 +14,7 @@ export const ProfileButton = () => {
   };
   return (
     <span className="cursor-pointer flex" onClick={onClick}>
-      <FaRegUser className="h-5 w-5 mr-2" />
+      <FaRegUser className="h-5 w-5 mr-4" />
       Profile
     </span>
   );
