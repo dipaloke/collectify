@@ -1,6 +1,7 @@
 import { FaExclamationTriangle } from "react-icons/fa";
 import { CardWrapper } from "./card-wrapper";
 
+
 export const ErrorCard = () => {
   return (
     <CardWrapper
