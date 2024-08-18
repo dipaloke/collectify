@@ -57,7 +57,7 @@ model Collection {
   id                        String        @id     @default(uuid())
   name                      String
   description               String?
-  category                  String
+  category                  Category
   imageUrl                  String
   userId                    String
   user                      User          @relation(fields: [userId],references: [id], onDelete: Cascade)
@@ -178,4 +178,12 @@ model Like {
 enum Role {
   USER
   ADMIN
+}
+
+enum Category {
+  BOOKS
+  COINS
+  SILVERWARE
+  ANIMES
+  OTHERS
 }
