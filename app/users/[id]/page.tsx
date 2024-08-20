@@ -1,4 +1,3 @@
-"use client"
 import React from "react";
 import CollectionListContainer from "@/components/collection/collection-list-container";
 
