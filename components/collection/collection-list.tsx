@@ -15,6 +15,8 @@ import { CollectionDataTable } from "../data-table/collection-data-table";
 import { columns } from "../data-table/columns";
 import { getSingleCollection } from "@/lib/collection";
 
+
+
 //TODO: create pagianation and filter
 
 export const CollectionList = async () => {

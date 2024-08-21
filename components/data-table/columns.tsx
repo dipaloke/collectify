@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
-import { MoveHorizontalIcon } from "lucide-react";
+import { ArrowUpDown, MoveHorizontalIcon } from "lucide-react";
 import { DeleteOneCollection } from "@/actions/delete-collection";
 
 export type Collection = {
@@ -45,7 +45,17 @@ export const columns: ColumnDef<Collection>[] = [
   },
   {
     accessorKey: "name",
-    header: () => <div>Name</div>,
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Name
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
     cell: ({ row }) => {
       const name = row.getValue("name") as string;
       return <div className="font-bold">{name}</div>;

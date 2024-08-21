@@ -4,7 +4,10 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  getPaginationRowModel,
   useReactTable,
+  SortingState,
+  getSortedRowModel
 } from "@tanstack/react-table";
 
 import {
@@ -17,6 +20,7 @@ import {
 } from "@/components/ui/table";
 import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { Button } from "../ui/button";
+import { useState } from "react";
 
 interface CollectionDataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -27,10 +31,19 @@ export function CollectionDataTable<TData, TValue>({
   columns,
   data,
 }: CollectionDataTableProps<TData, TValue>) {
+
+  const [sorting, setSorting] = useState<SortingState>([])
+
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
+    state: {
+      sorting
+    }
   });
 
   return (
@@ -85,6 +98,24 @@ export function CollectionDataTable<TData, TValue>({
           )}
         </TableBody>
       </Table>
+      <div className="flex items-center justify-end space-x-2 py-4 px-4">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
+          Previous
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+        >
+          Next
+        </Button>
+      </div>
     </div>
   );
 }
