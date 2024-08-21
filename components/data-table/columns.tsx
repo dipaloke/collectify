@@ -29,14 +29,14 @@ export type Collection = {
 export const columns: ColumnDef<Collection>[] = [
   {
     accessorKey: "image",
-    header: () => <div className="hidden sm:table-cell">Image</div>,
+    header: () => <div className="text-left">Image</div>,
     cell: ({ row }) => {
       const image = row.getValue("image") as string;
       return (
         <Image
           alt="Image"
           src={image ? image : "/public/images/placeholder.svg"}
-          className="aspect-square rounded-md object-cover hidden sm:table-cell"
+          className="aspect-square rounded-md object-cover"
           height="64"
           width="64"
         />
@@ -63,11 +63,22 @@ export const columns: ColumnDef<Collection>[] = [
   },
   {
     accessorKey: "category",
-    header: () => <div>Category</div>,
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Category
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+
     cell: ({ row }) => {
       const category = row.getValue("category") as Category;
       return (
-        <Badge variant="outline" className="shadow-sm bg-indigo-300/15">
+        <Badge variant="outline" className="shadow-sm bg-indigo-300/15 text-center">
           {category}
         </Badge>
       );
@@ -75,12 +86,12 @@ export const columns: ColumnDef<Collection>[] = [
   },
   {
     accessorKey: "description",
-    header: () => <div className="hidden md:table-cell">Description</div>,
+    header: () => <div className="text-left">Description</div>,
     cell: ({ row }) => {
       const data = row.getValue("description") as string;
-      const description = data.split(" ").slice(0, 8).join(" ") + "...";
+      const description = data.split(" ").slice(0, 6).join(" ") + "...";
       return (
-        <div className="hidden md:table-cell overflow-hidden">
+        <div className="text-lest">
           {description}
         </div>
       );
@@ -88,7 +99,7 @@ export const columns: ColumnDef<Collection>[] = [
   },
   {
     accessorKey: "creationDate",
-    header: () => <div className="hidden sm:table-cell">Creation Date</div>,
+    header: () => <div className="hidden md:table-cell">Creation Date</div>,
     cell: ({ row }) => {
       const date = row.getValue("creationDate");
       return (
