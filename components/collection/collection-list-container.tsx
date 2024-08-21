@@ -3,6 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { HeaderBreadcrumb } from "./breadcrumb";
 import { CollectionList } from "./collection-list";
 
+
 export default function CollectionListContainer() {
   return (
     <div className="flex w-full flex-col bg-muted/40 md:container">
@@ -11,7 +12,7 @@ export default function CollectionListContainer() {
           <HeaderBreadcrumb />
         </div>
         <div className="grid items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
-          <Tabs defaultValue="all">
+          <Tabs defaultValue="collection">
             <TabsList>
               <TabsTrigger value="collection">My collections</TabsTrigger>
               <TabsTrigger value="settings">Settings</TabsTrigger>

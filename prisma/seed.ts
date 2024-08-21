@@ -144,6 +144,54 @@ async function main() {
       },
     },
   });
+
+  const AnimeCollection = await prisma.collection.create({
+    data: {
+      name: 'My Anime',
+      description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate',
+      category: 'ANIMES',
+      imageUrl: "",
+      customString2State: true,
+      customString2Name: 'Maker',
+      customInt2State: true,
+      customInt2Name: 'Season',
+      customDate2State: true,
+      customDate2Name: 'Air Date',
+      customCheckbox2State: true,
+      customCheckbox2Name: 'OVA Edition',
+      user: { connect: { id: 'f38cd650-0a9b-4f5a-be3e-bacafc83c068' } },
+      items: {
+        create: [
+          {
+            name: 'One peace',
+            tags: ['action', 'adventure'],
+            customString2Value: 'Tiffany & Co.',
+            customInt2Value: 12,
+            customDate2Value: new Date('1890-01-01'),
+            customCheckbox2Value: true,
+          },
+          {
+            name: 'Bleach',
+            tags: ['action', 'drama'],
+            customString2Value: 'X Animation',
+            customInt2Value: 5,
+            customDate2Value: new Date('1905-01-01'),
+            customCheckbox2Value: true,
+          },
+          {
+            name: 'Hunter X Hunter',
+            tags: ['shonen', 'peace of life'],
+            customString2Value: 'Z Animation',
+            customInt2Value: 3,
+            customDate2Value: new Date('1910-01-01'),
+            customCheckbox2Value: false,
+          },
+        ],
+      },
+    },
+  });
+
+
   console.log('Seeding finished.');
 }
 
