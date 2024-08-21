@@ -8,49 +8,26 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-
 import { CollectionFilter } from "./collectio-filter";
 import { ExportButton } from "./export-button";
 import { AddCollectionButton } from "./add-collection-button";
-import Image from "next/image";
-import { Badge } from "../ui/badge";
-import { Button } from "../ui/button";
-import { MoveHorizontalIcon } from "lucide-react";
-import { currentUser } from "@/lib/auth";
-import { findCollectionById } from "@/data/collection";
-import { Date } from "../date";
+import { CollectionDataTable } from "../data-table/collection-data-table";
+import { columns } from "../data-table/columns";
+import { getSingleCollection } from "@/lib/collection";
 
-// TODO: Make the table dynamic by using shadCn TABLE
+
+
+//TODO: create pagianation and filter
 
 export const CollectionList = async () => {
-  const user = await currentUser();
-  const collections = await findCollectionById(user?.id as string);
-
+  const singleCollection = await getSingleCollection();
   return (
     <Card>
       <CardHeader>
         <div className="flex-1 flex">
-          <div>
-            <CardTitle>My Collections</CardTitle>
-            <CardDescription>
+          <div className="">
+            <CardTitle className="text-md md:text-2xl">My Collections</CardTitle>
+            <CardDescription className="text-sm">
               Manage collections and view their performance.
             </CardDescription>
           </div>
@@ -62,76 +39,7 @@ export const CollectionList = async () => {
         </div>
       </CardHeader>
       <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="hidden w-[100px] sm:table-cell">
-                <span className="sr-only">Image</span>
-              </TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead>Category</TableHead>
-              <TableHead className="hidden md:table-cell">
-                Description
-              </TableHead>
-              <TableHead className="hidden md:table-cell">Created at</TableHead>
-              <TableHead>
-                <span className="sr-only">Actions</span>
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {collections
-              ? collections.map((collection) => (
-                  <TableRow key={collection.id}>
-                    <TableCell className="hidden sm:table-cell">
-                      <Image
-                        alt={collection.name}
-                        className="aspect-square rounded-md object-cover"
-                        height="64"
-                        src={
-                          collection.imageUrl
-                            ? collection.imageUrl
-                            : "images/placeholder.svg"
-                        }
-                        width="64"
-                      />
-                    </TableCell>
-                    <TableCell className="font-medium">
-                      {collection.name}
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="outline">{collection.category}</Badge>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell">
-                      {collection.description}
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell">
-                      <Date createdAt={collection.createdAt} />
-                    </TableCell>
-                    <TableCell>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button
-                            aria-haspopup="true"
-                            size="icon"
-                            variant="ghost"
-                          >
-                            <MoveHorizontalIcon className="h-4 w-4" />
-                            <span className="sr-only">Toggle menu</span>
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                          <DropdownMenuItem>Edit</DropdownMenuItem>
-                          <DropdownMenuItem>Delete</DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
-                  </TableRow>
-                ))
-              : null}
-          </TableBody>
-        </Table>
+        <CollectionDataTable columns={columns} data={singleCollection} />
       </CardContent>
       <CardFooter>
         {/* TODO: make dynamic */}
