@@ -3,8 +3,17 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { HeaderBreadcrumb } from "./breadcrumb";
 import { CollectionList } from "./collection-list";
 
+import { currentUser } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
-export default function CollectionListContainer() {
+
+ const CollectionListContainer = async () =>{
+  const user = await currentUser()
+
+  if(!user) {
+    redirect("/")
+  }
+
   return (
     <div className="flex w-full flex-col bg-muted/40 md:container">
       <div className="flex flex-col sm:gap-4 sm:py-4 ">
@@ -30,3 +39,4 @@ export default function CollectionListContainer() {
     </div>
   );
 }
+export default CollectionListContainer
