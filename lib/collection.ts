@@ -11,7 +11,7 @@ export const getSingleCollection = async (): Promise<Collection[]> => {
     name: collection.name,
     description: collection.description as string,
     category: collection.category,
-    image: collection.imageUrl,
+    image: collection.imageUrl as string,
     creationDate: collection.createdAt,
   }));
 };

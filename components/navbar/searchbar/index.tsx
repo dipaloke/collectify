@@ -1,3 +1,4 @@
+"use client"
 import { useState } from "react";
 import { AutoComplete, type Option } from "./autoComplete";
 

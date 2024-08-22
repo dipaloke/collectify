@@ -2,7 +2,6 @@
 
 import { Category } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
-import { format, parseISO } from "date-fns";
 import { Date } from "../date";
 import Image from "next/image";
 import { Badge } from "../ui/badge";
@@ -14,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
-import { ArrowUpDown, MoveHorizontalIcon } from "lucide-react";
+import { ArrowUpDown, EllipsisVerticalIcon, MoveHorizontalIcon } from "lucide-react";
 import { DeleteOneCollection } from "@/actions/delete-collection";
 
 export type Collection = {
@@ -122,7 +121,7 @@ export const columns: ColumnDef<Collection>[] = [
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button aria-haspopup="true" size="icon" variant="ghost">
-              <MoveHorizontalIcon className="h-4 w-4" />
+              <EllipsisVerticalIcon className="h-4 w-4" />
               <span className="sr-only">Toggle menu</span>
             </Button>
           </DropdownMenuTrigger>

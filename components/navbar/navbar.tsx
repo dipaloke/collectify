@@ -1,4 +1,3 @@
-"use client";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { ThemeToggle } from "./theme-toggle";
@@ -8,9 +7,11 @@ import { LoginButton } from "../auth/login-button";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { UserButton } from "./user-button";
 import { MobileSidebar } from "./mobile-sidebar";
+import { currentUser } from "@/lib/auth";
 
-export const Navbar = () => {
-  const user = useCurrentUser();
+export const Navbar = async () => {
+  
+  const user = await currentUser();
 
   return (
     <nav className="container flex sticky top-0 z-50 gap-5 justify-between items-center px-8 py-3 font-bold border-b border-solid leading-[154.5%] max-md:flex-wrap max-md:px-5 bg-slate-50 shadow-sm dark:bg-slate-900/70 transition-shadow">

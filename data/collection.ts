@@ -1,6 +1,7 @@
+import { currentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
 
-export const findCollectionById = async (id: string) => {
+export const findALLCollectionById = async (id: string) => {
   try {
     const collections = db.collection.findMany();
     return collections;
@@ -10,8 +11,12 @@ export const findCollectionById = async (id: string) => {
 };
 
 export const collectionsWithChosenFields = async (id: string) => {
+  const user = await currentUser();
   try {
     const collections = db.collection.findMany({
+      where: {
+        userId: user?.id,
+      },
       select: {
         id: true,
         name: true,
@@ -21,7 +26,7 @@ export const collectionsWithChosenFields = async (id: string) => {
         createdAt: true,
       },
     });
-    return collections
+    return collections;
   } catch (error) {
     return null;
   }

@@ -24,6 +24,7 @@ import { FaCircleNotch } from "react-icons/fa";
 import { login } from "@/actions/login";
 import { useToast } from "../ui/use-toast";
 
+
 export const LoginForm = () => {
   const router = useRouter();
   const { toast } = useToast();
@@ -40,7 +41,6 @@ export const LoginForm = () => {
   const [success, setSuccess] = useState<string | undefined>("");
 
   const [isPending, startTransition] = useTransition();
-
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -65,10 +65,11 @@ export const LoginForm = () => {
               description: `${data.error}`,
             });
           }
-          if (data?.success) {
-            form.reset()
+          if (data?.redirectTo) {
+            form.reset();
             setSuccess(data.success);
             router.push(data.redirectTo);
+            router.refresh()
             toast({
               title: `${data.success}`,
               description: "You have successfully logged in",
@@ -76,9 +77,9 @@ export const LoginForm = () => {
           }
         })
         .catch(() => setError("Something went wrong!"));
+
     });
   };
-
 
   return (
     <CardWrapper

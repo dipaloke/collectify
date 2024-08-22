@@ -24,8 +24,6 @@ import {
 import { Button } from "../ui/button";
 import { useEffect, useState } from "react";
 import { Input } from "../ui/input";
-import { ExportButton } from "../collection/export-button";
-import { AddCollectionButton } from "../collection/add-collection-button";
 
 interface CollectionDataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -78,7 +76,7 @@ export function CollectionDataTable<TData, TValue>({
         />
       </div>
 
-      
+
 
       <div className="rounded-md border">
         <Table>
