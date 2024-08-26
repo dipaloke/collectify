@@ -13,7 +13,7 @@ interface HeroProps {
 
 export const Hero = ({ buttonHref }: HeroProps) => {
   return (
-    <section className="flex flex-col items-center justify-center mt-20">
+    <section className="flex flex-col items-center justify-center">
       <div className="flex items-center justify-center flex-col w-full">
         <div className="flex items-center border shadow-sm p-4 bg-indigo-100 text-indigo-700 rounded-full uppercase font-bold dark:bg-gradient-to-r from-violet-500 to-violet-700 dark:text-white">
           <LuMedal className="h-6 w-6 mr-2" />

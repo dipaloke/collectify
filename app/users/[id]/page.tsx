@@ -4,13 +4,13 @@ import { currentUser } from "@/lib/auth";
 import { redirect } from "next/navigation";
 
 const UserIdPage = async () => {
-  const user = await currentUser()
+  const user = await currentUser();
 
-  if(!user) {
-    redirect("/")
+  if (!user) {
+    redirect("/");
   }
   return (
-    <div className="w-full flex flex-col justify-center items-center mb-16 lg:mb-16">
+    <div className="bg-slate-100 pt-5 pb-10 w-full flex flex-col justify-center items-center">
       <CollectionListContainer />
     </div>
   );

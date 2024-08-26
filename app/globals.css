@@ -6,6 +6,13 @@ img {
   max-width: none;
 }
 
+:root, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
 .text-gradient {
   text-align: center;
   color: #004ca6;

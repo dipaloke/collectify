@@ -8,12 +8,13 @@ import {
 } from "@/components/ui/card";
 
 import { ExportButton } from "./export-button";
-import { AddCollectionButton } from "./add-collection-button";
+import { AddCollectionButton } from "../add-collection/add-collection-button";
 import { CollectionDataTable } from "../data-table/collection-data-table";
 import { columns } from "../data-table/columns";
 import { getSingleCollection } from "@/lib/collection";
 import { Button } from "../ui/button";
 import { CirclePlusIcon } from "lucide-react";
+import Link from "next/link";
 
 export const CollectionList = async () => {
   const singleCollection = await getSingleCollection();
@@ -31,14 +32,17 @@ export const CollectionList = async () => {
           </div>
           <div className="ml-auto flex items-center gap-2">
             <ExportButton />
-            <AddCollectionButton asChild>
-              <Button size="sm" className="h-8 gap-1">
+            <Button asChild size="sm" className="h-8 gap-1">
+              <Link href="/create-collection">
                 <CirclePlusIcon className="h-3.5 w-3.5" />
                 <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
                   Add Collection
                 </span>
-              </Button>
-            </AddCollectionButton>
+              </Link>
+            </Button>
+
+            {/* <AddCollectionButton asChild>
+            </AddCollectionButton> */}
           </div>
         </div>
       </CardHeader>

@@ -8,6 +8,7 @@ import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
 import { Toaster } from "@/components/ui/toaster";
 import { Navbar } from "@/components/navbar/navbar";
+import { cn } from "@/lib/utils";
 
 const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
