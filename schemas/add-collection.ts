@@ -1,3 +1,4 @@
+import { Category } from "@prisma/client";
 import * as z from "zod";
 
 const CustomFieldSchema = z.object({
@@ -13,8 +14,8 @@ export const AddCollectionFormSchema = z
       .max(10, "Collection name must be less than 10 characters"),
     description: z
       .string()
-      .max(100, "Description must be less than 100 characters"),
-    category: z.enum(["BOOK", "COINS", "SILVERWARE", "ANIME", "OTHERS"]), // Replace with your actual categories
+      .max(600, "Description must be less than 600 characters"),
+    category: z.nativeEnum(Category),
     imageUrl: z.string().url().optional(),
 
     customString1: CustomFieldSchema,
@@ -59,16 +60,17 @@ export const AddCollectionFormSchema = z
         "customDate2",
         "customDate3",
       ];
-      
+
       for (const field of customFields) {
         const customField = data[field as keyof typeof data] as z.infer<
           typeof CustomFieldSchema
         >;
 
-        if (customField.state && customField.name) {
+        if (customField.state && !customField.name) {
           return false;
         }
-        if (customField.state && customField.name) {
+
+        if (!customField.state && customField.name) {
           return false;
         }
 
