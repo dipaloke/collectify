@@ -1,16 +1,44 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useTransition } from "react";
 import { FormNav } from "./form-nav";
 import { FormFooter } from "./form-footer";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AddCollectionFormSchema } from "@/schemas/add-collection";
 import { z } from "zod";
-
-type Inputs = z.infer<typeof AddCollectionFormSchema>;
-
-type FieldName = keyof Inputs;
+import { Button } from "../ui/button";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../ui/form";
+import { Input } from "../ui/input";
+import { addCollection } from "@/actions/add-collection";
+import { useToast } from "../ui/use-toast";
+import { useRouter } from "next/navigation";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import { Category } from "@prisma/client";
+import { Textarea } from "../ui/textarea";
+import { Checkbox } from "../ui/checkbox";
+import { Label } from "../ui/label";
+import { CustomField } from "./custom-field";
+import { Separator } from "../ui/separator";
+import { FormError } from "../form-error";
+import { FormSuccess } from "../form-success";
+import { FaCircleNotch } from "react-icons/fa";
 
 const steps = [
   {
@@ -35,28 +63,98 @@ const steps = [
 ];
 
 export const AddCollectionForm = () => {
+  const router = useRouter();
+
+  const [previousStep, setPreviousStep] = useState(0);
   const [currentStep, setCurrentStep] = useState(0);
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    reset,
-    trigger,
-    formState: { errors },
-  } = useForm<Inputs>({
+  const [error, setError] = useState<string | undefined>("");
+  const [success, setSuccess] = useState<string | undefined>("");
+
+  const [isPending, startTransition] = useTransition();
+
+  const { toast } = useToast();
+
+  const form = useForm<z.infer<typeof AddCollectionFormSchema>>({
     resolver: zodResolver(AddCollectionFormSchema),
+    defaultValues: {
+      name: "",
+      description: "",
+      category: Category.BOOKS,
+      imageUrl: "",
+      items: [],
+      customString1: { state: false, name: "" },
+      customString2: { state: false, name: "" },
+      customString3: { state: false, name: "" },
+      customText1: { state: false, name: "" },
+      customText2: { state: false, name: "" },
+      customText3: { state: false, name: "" },
+      customInt1: { state: false, name: "" },
+      customInt2: { state: false, name: "" },
+      customInt3: { state: false, name: "" },
+      customCheckbox1: { state: false, name: "" },
+      customCheckbox2: { state: false, name: "" },
+      customCheckbox3: { state: false, name: "" },
+      customDate1: { state: false, name: "" },
+      customDate2: { state: false, name: "" },
+      customDate3: { state: false, name: "" },
+
+      customFields: {},
+    },
   });
 
-  const processForm: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
-    reset();
+  const onSubmit = (values: z.infer<typeof AddCollectionFormSchema>) => {
+    setError("");
+    setSuccess("");
+
+    startTransition(() => {
+      addCollection(values)
+        .then((data) => {
+          if (data?.error) {
+            setError(data.error);
+            toast({
+              title: "Uh oh! Something went wrong.",
+              description: `${data.error}`,
+              variant: "destructive",
+            });
+          } else if (data?.success) {
+            setSuccess("Collection added successfully!");
+            router.push("/collections"); //TODO:REdirect back to collectionList
+            toast({
+              title: "Success!!",
+              description: "Your collection has been created successfully.",
+              variant: "default",
+            });
+          }
+        })
+        .catch((err) => {
+          setError("An unexpected error occurred.");
+          console.error("Submission error:", err);
+          toast({
+            title: "Unexpected Error",
+            description: "An unexpected error occurred. Please try again.",
+            variant: "destructive",
+          });
+        });
+    });
   };
 
+  type FieldName = keyof z.infer<typeof AddCollectionFormSchema>;
+
   const next = async () => {
+    //TODO:test async functionality. remove if not necessary
     const fields = steps[currentStep].fields;
-    const output = await trigger;
+    const output = await form.trigger(fields as FieldName[], {
+      shouldFocus: true,
+    });
+    if (!output) return;
+
     if (currentStep < steps.length - 1) {
+      if (currentStep === steps.length - 2) {
+        await form.handleSubmit(onSubmit)();
+      }
+
+      setPreviousStep(currentStep);
       setCurrentStep((step) => step + 1);
     }
   };
@@ -69,238 +167,294 @@ export const AddCollectionForm = () => {
 
   return (
     <section className="absolute inset-0 flex flex-col justify-between p-24">
-      {/* <FormNav
+      <FormNav
         steps={steps}
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}
-      /> */}
-      {/* nav */}
-      <nav className="" aria-label="Progress">
-        <ol role="list" className="space-y-4 md:flex md:space-x-8 md:space-y-0">
-          {steps.map((step, index) => (
-            <li key={step.name} className="md:flex-1">
-              {currentStep > index ? (
-                <button
-                  onClick={() => setCurrentStep(index)}
-                  className="group flex w-full flex-col border-l-4 border-sky-600 py-2 pl-4 transition-colors hover:border-sky-800 md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4"
-                >
-                  <span className="text-sm font-medium text-sky-600 transition-colors group-hover:text-sky-800">
-                    {step.id}
+      />
+
+      <Form {...form}>
+        <form className="mt-9 py-12" onSubmit={form.handleSubmit(onSubmit)}>
+          {currentStep === 0 && (
+            <>
+              <h2 className="text-2xl font-semibold leading-7">
+                Collection Information
+              </h2>
+              <p className="mt-1 text-sm leading-6 text-muted-foreground">
+                Provide your collection details.
+              </p>
+              <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                <div className="sm:col-span-3">
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="block text-sm font-medium leading-6">
+                          Collection Name
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            disabled={isPending}
+                            placeholder="Choose a name"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <div className="sm:col-span-3">
+                  <FormField
+                    control={form.control}
+                    name="imageUrl"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Upload Cover Image</FormLabel>
+                        <FormControl>
+                          <Input {...field} disabled={isPending} type="file" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <div className="sm:col-span-4">
+                  <FormField
+                    control={form.control}
+                    name="category"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Category</FormLabel>
+                        <FormControl>
+                          <Select {...form.control.register("category")}>
+                            <SelectTrigger className="w-[180px]">
+                              <SelectValue placeholder="select a Category" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectGroup>
+                                <SelectLabel>Categories</SelectLabel>
+                                {Object.values(Category).map((category) => (
+                                  <SelectItem key={category} value={category}>
+                                    {category}
+                                  </SelectItem>
+                                ))}
+                              </SelectGroup>
+                            </SelectContent>
+                          </Select>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className="col-span-full">
+                  <FormField
+                    control={form.control}
+                    name="description"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Write a short description</FormLabel>
+                        <FormControl>
+                          <Textarea {...field} disabled={isPending} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
+            </>
+          )}
+
+          {currentStep === 1 && (
+            <>
+              <h2 className="text-2xl font-semibold leading-7">
+                Choose Item fields
+              </h2>
+              <p className="mt-1 text-sm leading-6 text-muted-foreground">
+                Choose a custom field by checking a box
+              </p>
+
+              <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                <div className="sm:col-span-2">
+                  <CustomField
+                    control={form.control}
+                    name="customString1"
+                    label="Custom String Field One"
+                    checkboxLabel="Enable Custom String One"
+                  />
+                </div>
+                <div className="sm:col-span-2">
+                  <CustomField
+                    control={form.control}
+                    name="customString2"
+                    label="Custom String Field Two"
+                    checkboxLabel="Enable Custom String Two"
+                  />
+                </div>
+                <div className="sm:col-span-2">
+                  <CustomField
+                    control={form.control}
+                    name="customString3"
+                    label="Custom String Field Three"
+                    checkboxLabel="Enable Custom String Three"
+                  />
+                </div>
+
+                <Separator className="col-span-full my-4" />
+
+                {/* custom text */}
+
+                <div className="sm:col-span-2">
+                  <CustomField
+                    control={form.control}
+                    name="customText1"
+                    label="Custom Text Field One"
+                    checkboxLabel="Enable Custom Text One"
+                  />
+                </div>
+                <div className="sm:col-span-2">
+                  <CustomField
+                    control={form.control}
+                    name="customText2"
+                    label="Custom Text Field Two"
+                    checkboxLabel="Enable Custom Text Two"
+                  />
+                </div>
+                <div className="sm:col-span-2">
+                  <CustomField
+                    control={form.control}
+                    name="customText3"
+                    label="Custom Text Field Three"
+                    checkboxLabel="Enable Custom Text Three"
+                  />
+                </div>
+
+                <Separator className="col-span-full my-4" />
+
+                {/* custom Int */}
+                <div className="sm:col-span-2">
+                  <CustomField
+                    control={form.control}
+                    name="customInt1"
+                    label="Custom Number Field One"
+                    checkboxLabel="Enable Custom Number One"
+                  />
+                </div>
+                <div className="sm:col-span-2">
+                  <CustomField
+                    control={form.control}
+                    name="customInt2"
+                    label="Custom Number Field Two"
+                    checkboxLabel="Enable Custom Number Two"
+                  />
+                </div>
+                <div className="sm:col-span-2">
+                  <CustomField
+                    control={form.control}
+                    name="customInt3"
+                    label="Custom Number Field Three"
+                    checkboxLabel="Enable Custom Number Three"
+                  />
+                </div>
+
+                <Separator className="col-span-full my-4" />
+                {/* custom checkbox */}
+
+                <div className="sm:col-span-2">
+                  <CustomField
+                    control={form.control}
+                    name="customCheckbox1"
+                    label="Custom CheckBox Field One"
+                    checkboxLabel="Enable Custom CheckBox One"
+                  />
+                </div>
+                <div className="sm:col-span-2">
+                  <CustomField
+                    control={form.control}
+                    name="customCheckbox2"
+                    label="Custom CheckBox Field Two"
+                    checkboxLabel="Enable Custom CheckBox Two"
+                  />
+                </div>
+                <div className="sm:col-span-2">
+                  <CustomField
+                    control={form.control}
+                    name="customCheckbox3"
+                    label="Custom CheckBox Field Three"
+                    checkboxLabel="Enable Custom CheckBox Three"
+                  />
+                </div>
+
+                <Separator className="col-span-full my-4" />
+                {/* custom Date */}
+
+                <div className="sm:col-span-2">
+                  <CustomField
+                    control={form.control}
+                    name="customDate1"
+                    label="Custom Date Field One"
+                    checkboxLabel="Enable Custom Date One"
+                  />
+                </div>
+                <div className="sm:col-span-2">
+                  <CustomField
+                    control={form.control}
+                    name="customDate2"
+                    label="Custom Date Field Two"
+                    checkboxLabel="Enable Custom Date Two"
+                  />
+                </div>
+                <div className="sm:col-span-2">
+                  <CustomField
+                    control={form.control}
+                    name="customDate3"
+                    label="Custom Date Field Three"
+                    checkboxLabel="Enable Custom Date Three"
+                  />
+                </div>
+
+                <Separator className="col-span-full my-4" />
+                {/* custom Fields */}
+
+                <div className="sm:col-span-2">
+                  <CustomField
+                    control={form.control}
+                    name="customFields"
+                    label="JSON Custom Field"
+                    checkboxLabel="Enable JSON Custom Field"
+                  />
+                </div>
+              </div>
+            </>
+          )}
+
+          {currentStep === 2 && (
+            <>
+              <h2 className="text-2xl font-semibold leading-7 ">Complete</h2>
+              <p className="mt-1 text-sm leading-6 text-muted-foreground">
+                You are one click away from creating a Collection.
+              </p>
+              <FormError message={error} />
+              <FormSuccess message={success} />
+              <Button type="submit" className="mt-5">
+                {isPending ? (
+                  <span className="flex items-center space-x-2">
+                    <FaCircleNotch className="h-4 w-4 animate-spin" />
+                    <span>Creating...</span>
                   </span>
-                  <span className="text-sm font-medium">{step.name}</span>
-                </button>
-              ) : currentStep === index ? (
-                <button
-                  onClick={() => setCurrentStep(index)}
-                  className="flex w-full flex-col border-l-4 border-sky-600 py-2 pl-4 md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4"
-                  aria-current="step"
-                >
-                  <span className="text-sm font-medium text-sky-600">
-                    {step.id}
-                  </span>
-                  <span className="text-sm font-medium">{step.name}</span>
-                </button>
-              ) : (
-                <button
-                  onClick={() => setCurrentStep(index)}
-                  className="group flex w-full flex-col border-l-4 border-gray-200 py-2 pl-4 transition-colors hover:border-gray-300 md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4"
-                >
-                  <span className="text-sm font-medium text-gray-500 transition-colors group-hover:text-gray-700">
-                    {step.id}
-                  </span>
-                  <span className="text-sm font-medium">{step.name}</span>
-                </button>
-              )}
-            </li>
-          ))}
-        </ol>
-      </nav>
-
-      {/* Main form */}
-      <form className="mt-12 py-12">
-        {currentStep === 0 && (
-          <>
-            <h2 className="text-base font-semibold leading-7 text-gray-900">
-              Collection Information
-            </h2>
-            <p className="mt-1 text-sm leading-6 text-gray-600">
-              Provide your collection details.
-            </p>
-            <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-              <div className="sm:col-span-3">
-                <label
-                  htmlFor="first-name"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Collection Name
-                </label>
-                <div className="mt-2">
-                  <input
-                    type="text"
-                    name="first-name"
-                    id="first-name"
-                    autoComplete="given-name"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6"
-                  />
-                </div>
-              </div>
-
-              <div className="sm:col-span-3">
-                <label
-                  htmlFor="last-name"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Image
-                </label>
-                <div className="mt-2">
-                  <input
-                    type=""
-                    name="last-name"
-                    id="last-name"
-                    autoComplete="family-name"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6"
-                  />
-                </div>
-              </div>
-
-              <div className="sm:col-span-4">
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Email address
-                </label>
-                <div className="mt-2">
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6"
-                  />
-                </div>
-              </div>
-            </div>
-          </>
-        )}
-
-        {currentStep === 1 && (
-          <>
-            <h2 className="text-base font-semibold leading-7 text-gray-900">
-              Address
-            </h2>
-            <p className="mt-1 text-sm leading-6 text-gray-600">
-              Address where you can receive mail.
-            </p>
-
-            <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-              <div className="sm:col-span-3">
-                <label
-                  htmlFor="country"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Country
-                </label>
-                <div className="mt-2">
-                  <select
-                    id="country"
-                    name="country"
-                    autoComplete="country-name"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:max-w-xs sm:text-sm sm:leading-6"
-                  >
-                    <option>United States</option>
-                    <option>Canada</option>
-                    <option>Mexico</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="col-span-full">
-                <label
-                  htmlFor="street-address"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Street address
-                </label>
-                <div className="mt-2">
-                  <input
-                    type="text"
-                    name="street-address"
-                    id="street-address"
-                    autoComplete="street-address"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6"
-                  />
-                </div>
-              </div>
-
-              <div className="sm:col-span-2 sm:col-start-1">
-                <label
-                  htmlFor="city"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  City
-                </label>
-                <div className="mt-2">
-                  <input
-                    type="text"
-                    name="city"
-                    id="city"
-                    autoComplete="address-level2"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6"
-                  />
-                </div>
-              </div>
-
-              <div className="sm:col-span-2">
-                <label
-                  htmlFor="region"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  State / Province
-                </label>
-                <div className="mt-2">
-                  <input
-                    type="text"
-                    name="region"
-                    id="region"
-                    autoComplete="address-level1"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6"
-                  />
-                </div>
-              </div>
-
-              <div className="sm:col-span-2">
-                <label
-                  htmlFor="postal-code"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  ZIP / Postal code
-                </label>
-                <div className="mt-2">
-                  <input
-                    type="text"
-                    name="postal-code"
-                    id="postal-code"
-                    autoComplete="postal-code"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6"
-                  />
-                </div>
-              </div>
-            </div>
-          </>
-        )}
-
-        {currentStep === 2 && (
-          <>
-            <h2 className="text-base font-semibold leading-7 text-gray-900">
-              Complete
-            </h2>
-            <p className="mt-1 text-sm leading-6 text-gray-600">
-              Thank you for your submission.
-            </p>
-          </>
-        )}
-      </form>
+                ) : (
+                  "Create Collection"
+                )}
+              </Button>
+            </>
+          )}
+        </form>
+      </Form>
       {/* <FormFooter
         steps={steps}
         currentStep={currentStep}
