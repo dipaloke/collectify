@@ -100,7 +100,7 @@ export const addCollection = async (
         },
       },
     });
-    return { success: true, collection: newCollection };
+    return { success: "Collection created", collection: newCollection };
   } catch (error) {
     console.error("Error creating collection:", error);
     return { error: "Failed to create collection. Please try again." };

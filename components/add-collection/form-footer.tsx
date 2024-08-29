@@ -1,85 +1,32 @@
-import { useForm } from "react-hook-form";
-import { number } from "zod";
-
+import { Button } from "../ui/button";
+import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
 
 interface FormFooterProps {
   currentStep: number;
-  setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
-  steps: Steps[];
+  stepsLength: number;
+  onNext: () => void;
+  onPrev: () => void;
 }
-
-interface Steps {
-  id: string;
-  name: string;
-  fields?: string[]
-}
-
 
 export const FormFooter = ({
   currentStep,
-  setCurrentStep,
-  steps,
+  stepsLength,
+  onNext,
+  onPrev,
 }: FormFooterProps) => {
-  const {trigger} = useForm()
-  const next = async () => {
-    const fields = steps[currentStep].fields
-    const output = await trigger
-    if (currentStep < steps.length - 1) {
-      setCurrentStep((step) => step + 1);
-    }
-  };
-
-  const prev = () => {
-    if (currentStep > 0) {
-      setCurrentStep((step) => step - 1);
-    }
-  };
-
   return (
     <div className="pb-20">
       <div className="flex justify-between">
-        <button
+        <Button type="button" onClick={onPrev} disabled={currentStep === 0}>
+          <ArrowBigLeft className="h-5 w-5" />
+        </Button>
+        <Button
           type="button"
-          onClick={prev}
-          disabled={currentStep === 0}
-          className="rounded bg-white px-2 py-1 text-sm font-semibold text-sky-900 shadow-sm ring-1 ring-inset ring-sky-300 hover:bg-sky-50 disabled:cursor-not-allowed disabled:opacity-50"
+          onClick={onNext}
+          disabled={currentStep === stepsLength - 1}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className="h-6 w-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M15.75 19.5L8.25 12l7.5-7.5"
-            />
-          </svg>
-        </button>
-        <button
-          type="button"
-          onClick={next}
-          disabled={currentStep === steps.length - 1}
-          className="rounded bg-white px-2 py-1 text-sm font-semibold text-sky-900 shadow-sm ring-1 ring-inset ring-sky-300 hover:bg-sky-50 disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className="h-6 w-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M8.25 4.5l7.5 7.5-7.5 7.5"
-            />
-          </svg>
-        </button>
+          <ArrowBigRight className="h-5 w-5" />
+        </Button>
       </div>
     </div>
   );
