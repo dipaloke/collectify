@@ -2,8 +2,8 @@ import { Category } from "@prisma/client";
 import * as z from "zod";
 
 const CustomFieldSchema = z.object({
-  state: z.boolean().default(false), // Checkbox controls this
-  name: z.string().optional(), // Name of the custom field
+  state: z.boolean().default(false),
+  name: z.string().optional(),
 });
 
 export const AddCollectionFormSchema = z
@@ -11,12 +11,13 @@ export const AddCollectionFormSchema = z
     name: z
       .string()
       .min(1, "Name is required")
-      .max(10, "Collection name must be less than 10 characters"),
+      .max(20, "Collection name must be less than 10 characters"),
     description: z
       .string()
+      .min(1, "Description is required")
       .max(600, "Description must be less than 600 characters"),
     category: z.nativeEnum(Category),
-    imageUrl: z.string().url().optional(),
+    imageUrl: z.string(z.instanceof(File)),
 
     customString1: CustomFieldSchema,
     customString2: CustomFieldSchema,
