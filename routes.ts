@@ -4,6 +4,6 @@ export const publicRoute = ["/"];
 
 export const authRoutes = ["/auth/login", "/auth/register", "/auth/error"];
 
-export const apiAuthPrefix = "/api/auth";
+export const apiAuthPrefix = ["/api/auth","/api/uploadthing"];
 
 export const REGISTER_REDIRECT = "/auth/login";

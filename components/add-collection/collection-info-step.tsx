@@ -24,13 +24,17 @@ import { Textarea } from "../ui/textarea";
 import { z } from "zod";
 import { AddCollectionFormSchema } from "@/schemas/add-collection";
 
-import "@uploadcare/react-uploader/core.css";
-import { FileUploaderRegular } from "@uploadcare/react-uploader";
+import { FileUploader } from "./file-uploader";
+import Markdown from 'react-markdown'
 interface CollectionInfoStepProps {
   isPending: boolean;
+  setImageUrl: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export const CollectionInfoStep = ({ isPending }: CollectionInfoStepProps) => {
+export const CollectionInfoStep = ({
+  isPending,
+  setImageUrl,
+}: CollectionInfoStepProps) => {
   const form = useFormContext<z.infer<typeof AddCollectionFormSchema>>();
 
   return (
@@ -72,9 +76,12 @@ export const CollectionInfoStep = ({ isPending }: CollectionInfoStepProps) => {
               <FormItem>
                 <FormLabel>Upload Cover Image</FormLabel>
                 <FormControl>
-                  <Input {...field} disabled={isPending} type="file" />
 
-                  {/* <FileUploaderRegular pubkey="0a5bfc42073707986a85" /> */}
+                  <FileUploader
+                    {...field}
+                    setLoading={isPending}
+                    setImageUrl={setImageUrl}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -120,6 +127,9 @@ export const CollectionInfoStep = ({ isPending }: CollectionInfoStepProps) => {
               <FormItem>
                 <FormLabel>Write a short description</FormLabel>
                 <FormControl>
+                  <Markdown>
+
+                  </Markdown>
                   <Textarea {...field} disabled={isPending} rows={10} />
                 </FormControl>
                 <FormMessage />

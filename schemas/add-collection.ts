@@ -17,7 +17,7 @@ export const AddCollectionFormSchema = z
       .min(1, "Description is required")
       .max(600, "Description must be less than 600 characters"),
     category: z.nativeEnum(Category),
-    imageUrl: z.string(z.instanceof(File)),
+    imageUrl: z.string().optional(),
 
     customString1: CustomFieldSchema,
     customString2: CustomFieldSchema,
@@ -84,3 +84,4 @@ export const AddCollectionFormSchema = z
       path: [],
     }
   );
+

@@ -191,6 +191,272 @@ async function main() {
     },
   });
 
+  const poetryBooksCollection = await prisma.collection.create({
+    data: {
+      name: 'Poetry Books',
+      description: 'A collection of classic poetry books.',
+      category: 'BOOKS',
+      imageUrl: 'https://example.com/poetry-collection.jpg',
+      customString1State: true,
+      customString1Name: 'Author',
+      customInt1State: true,
+      customInt1Name: 'Page Count',
+      customDate1State: true,
+      customDate1Name: 'Publication Date',
+      customCheckbox1State: true,
+      customCheckbox1Name: 'First Edition',
+      user: { connect: { id: 'f38cd650-0a9b-4f5a-be3e-bacafc83c068' } },
+      items: {
+        create: [
+          {
+            name: 'Leaves of Grass',
+            tags: ['poetry', 'classic'],
+            customString1Value: 'Walt Whitman',
+            customInt1Value: 300,
+            customDate1Value: new Date('1855-07-04'),
+            customCheckbox1Value: false,
+          },
+          {
+            name: 'The Waste Land',
+            tags: ['poetry', 'modernist'],
+            customString1Value: 'T. S. Eliot',
+            customInt1Value: 64,
+            customDate1Value: new Date('1922-12-15'),
+            customCheckbox1Value: true,
+          },
+        ],
+      },
+    },
+  });
+
+  const scienceBooksCollection = await prisma.collection.create({
+    data: {
+      name: 'Science Books',
+      description: 'A collection of popular science books.',
+      category: 'BOOKS',
+      imageUrl: 'https://example.com/science-books.jpg',
+      customString1State: true,
+      customString1Name: 'Author',
+      customInt1State: true,
+      customInt1Name: 'Page Count',
+      customDate1State: true,
+      customDate1Name: 'Publication Date',
+      customCheckbox1State: true,
+      customCheckbox1Name: 'Illustrated Edition',
+      user: { connect: { id: 'f38cd650-0a9b-4f5a-be3e-bacafc83c068' } },
+      items: {
+        create: [
+          {
+            name: 'A Brief History of Time',
+            tags: ['science', 'cosmology'],
+            customString1Value: 'Stephen Hawking',
+            customInt1Value: 212,
+            customDate1Value: new Date('1988-03-01'),
+            customCheckbox1Value: true,
+          },
+          {
+            name: 'The Selfish Gene',
+            tags: ['evolution', 'biology'],
+            customString1Value: 'Richard Dawkins',
+            customInt1Value: 360,
+            customDate1Value: new Date('1976-11-13'),
+            customCheckbox1Value: false,
+          },
+        ],
+      },
+    },
+  });
+
+  const worldCoinsCollection = await prisma.collection.create({
+    data: {
+      name: 'World Coins',
+      description: 'A collection of coins from around the world.',
+      category: 'COINS',
+      imageUrl: 'https://example.com/world-coins.jpg',
+      customString3State: true,
+      customString3Name: 'Country',
+      customInt3State: true,
+      customInt3Name: 'Denomination',
+      customDate3State: true,
+      customDate3Name: 'Mint Date',
+      customCheckbox3State: true,
+      customCheckbox3Name: 'Mint Condition',
+      user: { connect: { id: 'f38cd650-0a9b-4f5a-be3e-bacafc83c068' } },
+      items: {
+        create: [
+          {
+            name: 'Canadian Maple Leaf',
+            tags: ['gold', 'canadian'],
+            customString3Value: 'Canada',
+            customInt3Value: 1,
+            customDate3Value: new Date('1979-01-01'),
+            customCheckbox3Value: true,
+          },
+          {
+            name: 'Euro Cent',
+            tags: ['euro', 'coin'],
+            customString3Value: 'Eurozone',
+            customInt3Value: 1,
+            customDate3Value: new Date('2002-01-01'),
+            customCheckbox3Value: false,
+          },
+        ],
+      },
+    },
+  });
+
+  const historicalCoinsCollection = await prisma.collection.create({
+    data: {
+      name: 'Historical Coins',
+      description: 'A collection of historical coins from different eras.',
+      category: 'COINS',
+      imageUrl: 'https://example.com/historical-coins.jpg',
+      customString3State: true,
+      customString3Name: 'Country',
+      customInt3State: true,
+      customInt3Name: 'Denomination',
+      customDate3State: true,
+      customDate3Name: 'Mint Date',
+      customCheckbox3State: true,
+      customCheckbox3Name: 'Mint Condition',
+      user: { connect: { id: 'f38cd650-0a9b-4f5a-be3e-bacafc83c068' } },
+      items: {
+        create: [
+          {
+            name: 'Roman Denarius',
+            tags: ['roman', 'silver'],
+            customString3Value: 'Roman Empire',
+            customInt3Value: 1,
+            customDate3Value: new Date('4400-01-01'),
+            customCheckbox3Value: false,
+          },
+          {
+            name: 'Spanish Doubloon',
+            tags: ['gold', 'treasure'],
+            customString3Value: 'Spain',
+            customInt3Value: 8,
+            customDate3Value: new Date('1787-01-01'),
+            customCheckbox3Value: true,
+          },
+        ],
+      },
+    },
+  });
+
+  const modernSilverwareCollection = await prisma.collection.create({
+    data: {
+      name: 'Modern Silverware',
+      description: 'A collection of contemporary silverware.',
+      category: 'SILVERWARE',
+      imageUrl: 'https://example.com/modern-silverware.jpg',
+      customString2State: true,
+      customString2Name: 'Maker',
+      customInt2State: true,
+      customInt2Name: 'Piece Count',
+      customDate2State: true,
+      customDate2Name: 'Manufacture Date',
+      customCheckbox2State: true,
+      customCheckbox2Name: 'Dishwasher Safe',
+      user: { connect: { id: 'f38cd650-0a9b-4f5a-be3e-bacafc83c068' } },
+      items: {
+        create: [
+          {
+            name: 'Contemporary Silver Spoon',
+            tags: ['silverware', 'spoon'],
+            customString2Value: 'Modern Design Co.',
+            customInt2Value: 1,
+            customDate2Value: new Date('2015-01-01'),
+            customCheckbox2Value: true,
+          },
+          {
+            name: 'Silver Plated Knife',
+            tags: ['knife', 'plated'],
+            customString2Value: 'Silvercraft',
+            customInt2Value: 1,
+            customDate2Value: new Date('2018-01-01'),
+            customCheckbox2Value: false,
+          },
+        ],
+      },
+    },
+  });
+
+  const antiqueJewelryCollection = await prisma.collection.create({
+    data: {
+      name: 'Antique Jewelry',
+      description: 'A collection of rare and antique jewelry pieces.',
+      category: 'OTHERS',
+      imageUrl: 'https://example.com/antique-jewelry.jpg',
+      customString2State: true,
+      customString2Name: 'Jeweler',
+      customInt2State: true,
+      customInt2Name: 'Carat',
+      customDate2State: true,
+      customDate2Name: 'Craft Date',
+      customCheckbox2State: true,
+      customCheckbox2Name: 'Certificate of Authenticity',
+      user: { connect: { id: 'f38cd650-0a9b-4f5a-be3e-bacafc83c068' } },
+      items: {
+        create: [
+          {
+            name: 'Victorian Emerald Ring',
+            tags: ['ring', 'emerald'],
+            customString2Value: 'Jewelers Inc.',
+            customInt2Value: 3,
+            customDate2Value: new Date('1895-01-01'),
+            customCheckbox2Value: true,
+          },
+          {
+            name: 'Edwardian Sapphire Necklace',
+            tags: ['necklace', 'sapphire'],
+            customString2Value: 'Royal Gems',
+            customInt2Value: 5,
+            customDate2Value: new Date('1910-01-01'),
+            customCheckbox2Value: false,
+          },
+        ],
+      },
+    },
+  });
+
+  const animeMerchCollection = await prisma.collection.create({
+    data: {
+      name: 'Anime Merchandise',
+      description: 'A collection of anime merchandise.',
+      category: 'OTHERS',
+      imageUrl: 'https://example.com/anime-merch.jpg',
+      customString2State: true,
+      customString2Name: 'Character',
+      customInt2State: true,
+      customInt2Name: 'Series',
+      customDate2State: true,
+      customDate2Name: 'Release Date',
+      customCheckbox2State: true,
+      customCheckbox2Name: 'Limited Edition',
+      user: { connect: { id: 'f38cd650-0a9b-4f5a-be3e-bacafc83c068' } },
+      items: {
+        create: [
+          {
+            name: 'Naruto Action Figure',
+            tags: ['action figure', 'naruto'],
+            customString2Value: 'Naruto Uzumaki',
+            customInt2Value: 1,
+            customDate2Value: new Date('2020-01-01'),
+            customCheckbox2Value: true,
+          },
+          {
+            name: 'One Piece Mug',
+            tags: ['mug', 'one piece'],
+            customString2Value: 'Luffy',
+            customInt2Value: 1,
+            customDate2Value: new Date('2021-01-01'),
+            customCheckbox2Value: false,
+          },
+        ],
+      },
+    },
+  });
+
 
   console.log('Seeding finished.');
 }
