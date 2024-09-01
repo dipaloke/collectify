@@ -14,7 +14,7 @@ import { z } from "zod";
 import { AddCollectionFormSchema } from "@/schemas/add-collection";
 
 import { Form } from "../ui/form";
-import { useToast } from "../ui/use-toast";
+import { toast } from "sonner";
 
 import { addCollection } from "@/actions/add-collection";
 
@@ -22,6 +22,7 @@ import { CollectionInfoStep } from "./collection-info-step";
 import { CustomFieldStep } from "./custom-field-step";
 import { CompletionStep } from "./completion-step";
 import { useCurrentUser } from "@/hooks/use-current-user";
+
 
 const steps = [
   {
@@ -64,9 +65,9 @@ export const AddCollectionForm = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
 
-  const [isPending, startTransition] = useTransition();
+  const [loading, setLoading] = useState(false);
+  const [imageUrl, setImageUrl] = useState("")
 
-  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof AddCollectionFormSchema>>({
     resolver: zodResolver(AddCollectionFormSchema),
@@ -101,37 +102,27 @@ export const AddCollectionForm = () => {
   const onSubmit = (values: z.infer<typeof AddCollectionFormSchema>) => {
     setError("");
     setSuccess("");
+    setLoading(true);
+    values.imageUrl = imageUrl
 
-    startTransition(() => {
-      addCollection(values)
-        .then((data) => {
-          if (data?.error) {
-            setError(data.error);
-            toast({
-              title: "Uh oh! Something went wrong.",
-              description: `${data.error}`,
-              variant: "destructive",
-            });
-          } else if (data?.success) {
-            setSuccess(data.success);
-            toast({
-              title: "Success!!",
-              description: `${data.success}`,
-            });
-            router.push(`users/${user?.id}`);
-          }
-        })
-        .catch((err) => {
-          setError("An unexpected error occurred.");
-          console.error("Submission error:", err);
-          toast({
-            title: "Unexpected Error",
-            description: "An unexpected error occurred. Please try again.",
-            variant: "destructive",
-          });
-        });
-    });
+    addCollection(values)
+      .then((data) => {
+        if (data?.error) {
+          setError(data.error);
+          toast.error("Uh oh! Something went wrong.");
+        } else if (data?.success) {
+          setSuccess(data.success);
+          toast.success(`${data.success}`);
+          router.push(`users/${user?.id}`);
+        }
+      })
+      .catch((err) => {
+        setError("An unexpected error occurred.");
+        console.error("Submission error:", err);
+        toast.error("An unexpected error occurred. Please try again.");
+      });
   };
+
 
   type FieldName = keyof z.infer<typeof AddCollectionFormSchema>;
 
@@ -169,7 +160,7 @@ export const AddCollectionForm = () => {
 
       <Form {...form}>
         <form className="mt-9 py-12" onSubmit={form.handleSubmit(onSubmit)}>
-          {currentStep === 0 && <CollectionInfoStep isPending={isPending} />}
+          {currentStep === 0 && <CollectionInfoStep isPending={loading} setImageUrl={setImageUrl}/>}
 
           {currentStep === 1 && <CustomFieldStep />}
 
@@ -177,7 +168,8 @@ export const AddCollectionForm = () => {
             <CompletionStep
               error={error}
               success={success}
-              isPending={isPending}
+              // isPending={isPending}
+              isPending={loading}
             />
           )}
         </form>

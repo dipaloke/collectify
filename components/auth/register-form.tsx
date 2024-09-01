@@ -21,7 +21,8 @@ import { FaCircleNotch } from "react-icons/fa";
 import { register } from "@/actions/register";
 import { useRouter } from "next/navigation";
 import { REGISTER_REDIRECT } from "@/routes";
-import { useToast } from "../ui/use-toast";
+import { toast } from "sonner"
+
 
 export const RegisterForm = () => {
   const router = useRouter();
@@ -29,8 +30,6 @@ export const RegisterForm = () => {
   const [success, setSuccess] = useState<string | undefined>("");
 
   const [isPending, startTransition] = useTransition();
-
-  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof RegistrationSchema>>({
     resolver: zodResolver(RegistrationSchema),
@@ -49,18 +48,12 @@ export const RegisterForm = () => {
       register(values).then((data) => {
         if (data.error) {
           setError(data.error);
-          toast({
-            title: "Uh oh! Something went wrong.",
-            description: `${data.error}`,
-          });
+          toast(`${data.error}`);
         }
         if (data.success) {
           setSuccess(data.success);
           router.push(REGISTER_REDIRECT);
-          toast({
-            title: "Success!!",
-            description: "You have successfully registered. Please login",
-          });
+          toast("You have successfully registered. Please login");
         }
       });
     });

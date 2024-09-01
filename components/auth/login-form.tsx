@@ -22,12 +22,13 @@ import { FormError } from "../form-error";
 import { FormSuccess } from "../form-success";
 import { FaCircleNotch } from "react-icons/fa";
 import { login } from "@/actions/login";
-import { useToast } from "../ui/use-toast";
+import { toast } from "sonner"
+
 
 
 export const LoginForm = () => {
   const router = useRouter();
-  const { toast } = useToast();
+
   const searchParams = useSearchParams();
 
   const callbackUrl = searchParams.get("callback");
@@ -60,20 +61,14 @@ export const LoginForm = () => {
           if (data?.error) {
             form.reset();
             setError(data?.error);
-            toast({
-              title: "Uh oh! Something went wrong.",
-              description: `${data.error}`,
-            });
+            toast(`${data.error}`);
           }
           if (data?.redirectTo) {
             form.reset();
             setSuccess(data.success);
             router.push(data.redirectTo);
             router.refresh()
-            toast({
-              title: `${data.success}`,
-              description: "You have successfully logged in",
-            });
+            toast(`${data.success}`);
           }
         })
         .catch(() => setError("Something went wrong!"));
