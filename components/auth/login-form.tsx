@@ -61,14 +61,14 @@ export const LoginForm = () => {
           if (data?.error) {
             form.reset();
             setError(data?.error);
-            toast(`${data.error}`);
+            toast.error(`${data.error}`);
           }
           if (data?.redirectTo) {
             form.reset();
             setSuccess(data.success);
             router.push(data.redirectTo);
             router.refresh()
-            toast(`${data.success}`);
+            toast.success(`${data.success}`);
           }
         })
         .catch(() => setError("Something went wrong!"));

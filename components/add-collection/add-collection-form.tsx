@@ -23,7 +23,6 @@ import { CustomFieldStep } from "./custom-field-step";
 import { CompletionStep } from "./completion-step";
 import { useCurrentUser } from "@/hooks/use-current-user";
 
-
 const steps = [
   {
     id: "Step 1",
@@ -66,8 +65,7 @@ export const AddCollectionForm = () => {
   const [success, setSuccess] = useState<string | undefined>("");
 
   const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState("")
-
+  const [imageUrl, setImageUrl] = useState("");
 
   const form = useForm<z.infer<typeof AddCollectionFormSchema>>({
     resolver: zodResolver(AddCollectionFormSchema),
@@ -103,7 +101,7 @@ export const AddCollectionForm = () => {
     setError("");
     setSuccess("");
     setLoading(true);
-    values.imageUrl = imageUrl
+    values.imageUrl = imageUrl;
 
     addCollection(values)
       .then((data) => {
@@ -114,6 +112,7 @@ export const AddCollectionForm = () => {
           setSuccess(data.success);
           toast.success(`${data.success}`);
           router.push(`users/${user?.id}`);
+          router.refresh();
         }
       })
       .catch((err) => {
@@ -122,7 +121,6 @@ export const AddCollectionForm = () => {
         toast.error("An unexpected error occurred. Please try again.");
       });
   };
-
 
   type FieldName = keyof z.infer<typeof AddCollectionFormSchema>;
 
@@ -160,7 +158,9 @@ export const AddCollectionForm = () => {
 
       <Form {...form}>
         <form className="mt-9 py-12" onSubmit={form.handleSubmit(onSubmit)}>
-          {currentStep === 0 && <CollectionInfoStep isPending={loading} setImageUrl={setImageUrl}/>}
+          {currentStep === 0 && (
+            <CollectionInfoStep isPending={loading} setImageUrl={setImageUrl} />
+          )}
 
           {currentStep === 1 && <CustomFieldStep />}
 
