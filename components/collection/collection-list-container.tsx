@@ -5,14 +5,10 @@ import { CollectionList } from "./collection-list";
 
 import { currentUser } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { UserSettings } from "../settings/user-settings";
 
 
  const CollectionListContainer = async () =>{
-  const user = await currentUser()
-
-  if(!user) {
-    redirect("/")
-  }
 
   return (
     <div className="flex w-full flex-col bg-muted/40 md:container">
@@ -30,8 +26,7 @@ import { redirect } from "next/navigation";
               <CollectionList />
             </TabsContent>
             <TabsContent value="settings">
-              {/* TODO: Settings for normal user and admins  */}
-              Settings page
+              <UserSettings />
             </TabsContent>
           </Tabs>
         </div>

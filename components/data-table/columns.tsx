@@ -34,7 +34,7 @@ export const columns: ColumnDef<Collection>[] = [
       return (
         <Image
           alt="Image"
-          src={image ? image : "/public/images/placeholder.svg"}
+          src={image ? image : "/images/placeholder.svg"}
           className="aspect-square rounded-md object-cover"
           height="64"
           width="64"

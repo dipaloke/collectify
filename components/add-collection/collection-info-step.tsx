@@ -24,8 +24,8 @@ import { Textarea } from "../ui/textarea";
 import { z } from "zod";
 import { AddCollectionFormSchema } from "@/schemas/add-collection";
 
-import { FileUploader } from "./file-uploader";
-import Markdown from 'react-markdown'
+import { FileUploader } from "../file-uploader";
+
 interface CollectionInfoStepProps {
   isPending: boolean;
   setImageUrl: React.Dispatch<React.SetStateAction<string>>;
@@ -76,10 +76,8 @@ export const CollectionInfoStep = ({
               <FormItem>
                 <FormLabel>Upload Cover Image</FormLabel>
                 <FormControl>
-
                   <FileUploader
                     {...field}
-                    setLoading={isPending}
                     setImageUrl={setImageUrl}
                   />
                 </FormControl>
@@ -87,6 +85,7 @@ export const CollectionInfoStep = ({
               </FormItem>
             )}
           />
+          
         </div>
 
         <div className="sm:col-span-4">
@@ -127,9 +126,7 @@ export const CollectionInfoStep = ({
               <FormItem>
                 <FormLabel>Write a short description</FormLabel>
                 <FormControl>
-                  <Markdown>
 
-                  </Markdown>
                   <Textarea {...field} disabled={isPending} rows={10} />
                 </FormControl>
                 <FormMessage />
@@ -139,5 +136,6 @@ export const CollectionInfoStep = ({
         </div>
       </div>
     </>
+
   );
 };
