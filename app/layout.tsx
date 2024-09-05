@@ -8,6 +8,8 @@ import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
 import { Toaster } from "@/components/ui/sonner"
 import { Navbar } from "@/components/navbar/navbar";
+import { Button } from "@/components/ui/button";
+import JiraButton  from "@/components/jira-button";
 
 
 const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"] });
@@ -23,6 +25,8 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const session = await auth();
+
+
   return (
     <SessionProvider session={session}>
       <html lang="en">
@@ -35,6 +39,8 @@ export default async function RootLayout({
           >
             <Navbar />
             {children}
+            <JiraButton />
+
             <Footer />
             <Toaster />
           </ThemeProvider>

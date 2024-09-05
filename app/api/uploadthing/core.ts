@@ -1,6 +1,5 @@
-import { getUserById } from "@/data/user";
 import { currentUser } from "@/lib/auth";
-import { db } from "@/lib/db";
+
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
 

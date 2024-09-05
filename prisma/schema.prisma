@@ -23,6 +23,7 @@ model User {
   role          Role        @default(USER)
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
+  apiToken      String?     @unique 
 
   accounts      Account[]
 

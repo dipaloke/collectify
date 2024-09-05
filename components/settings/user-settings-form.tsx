@@ -53,7 +53,7 @@ export const UserSettingsForm = () => {
       setIsLoading(true);
       setError("");
       setSuccess("");
-      
+
       values.image = imageUrl;
 
       userSettings(values)
@@ -216,5 +216,6 @@ export const UserSettingsForm = () => {
         </Button>
       </form>
     </Form>
+    
   );
 };
