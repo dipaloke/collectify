@@ -6,6 +6,7 @@ import { CollectionList } from "./collection-list";
 import { currentUser } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { UserSettings } from "../settings/user-settings";
+import { IssuePage } from "../issue-page";
 
 
  const CollectionListContainer = async () =>{
@@ -21,12 +22,16 @@ import { UserSettings } from "../settings/user-settings";
             <TabsList>
               <TabsTrigger value="collection">My collections</TabsTrigger>
               <TabsTrigger value="settings">Settings</TabsTrigger>
+              <TabsTrigger value="issue">Issue</TabsTrigger>
             </TabsList>
             <TabsContent value="collection">
               <CollectionList />
             </TabsContent>
             <TabsContent value="settings">
               <UserSettings />
+            </TabsContent>
+            <TabsContent value="issue">
+              <IssuePage />
             </TabsContent>
           </Tabs>
         </div>
